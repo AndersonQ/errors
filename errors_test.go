@@ -249,3 +249,22 @@ func TestErrorEquality(t *testing.T) {
 		}
 	}
 }
+
+func TestWithStackUnwrap(t *testing.T) {
+	err := errors.New("to be wrapped")
+	wrapped := Wrap(err, "wrapping")
+
+	if !errors.Is(wrapped, err) {
+		t.Error("errors.Is could not find original error")
+	}
+}
+
+func TestWithStackAs(t *testing.T) {
+	err := errors.New("to be wrapped")
+	wrapped := Wrap(err, "wrapping")
+
+	var msgErr *withMessage
+	if !errors.As(wrapped, &msgErr) {
+		t.Error("errors.As could convert error to *withMessage")
+	}
+}
